@@ -1,4 +1,9 @@
- ## 1. 运行服务:
+- git clone 后
+- npm install /sudo npm install
+- 不知道各位安装webpack没有 如果没有 请先安装 webpack --- sudo npm install webpack -g 
+- 之后就可以玩耍喽
+
+## 1. 运行服务:
 
 Run:
 
