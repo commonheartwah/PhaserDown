@@ -1,34 +1,27 @@
- ## 1. Run the development server:
+ ## 1. 运行服务:
 
 Run:
 
 ```npm run dev```
 
-This will run a server so you can run the game in a browser. It will also start a watch process, so you can change the source and the process will recompile and refresh the browser automatically.
-
-To run the game, open your browser and enter http://localhost:3000 into the address bar.
-
-
-## Build for deployment:
+## 开发构建指令:
 
 Run:
 
 ```npm run deploy```
 
-This will optimize and minimize the compiled bundle.
+打包.
 
-## Deploy for cordova:
-Make sure to uncomment the cordova.js file in the src/index.html and to update config.xml with your informations. (name/description...)
+## 部署 for cordova:
+请确保取消注释src / index.html中的cordova.js文件并使用您的信息更新config.xml. (name/description...)
 
-More informations about the cordova configuration:
-https://cordova.apache.org/docs/en/latest/config_ref/
 
-There is 3 platforms actually tested and supported : 
+## 支持三种平台 : 
 - browser
 - ios
 - android
 
-First run (ios example):
+首次运行注意 (ios example):
 
 ```
 npm run cordova
@@ -44,4 +37,4 @@ cordova platform update ios
 cordova run ios
 ```
 
-This will optimize and minimize the compiled bundle.
+打包
