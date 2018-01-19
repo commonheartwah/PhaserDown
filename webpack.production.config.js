@@ -1,4 +1,5 @@
 var path = require('path')
+var filePath= require('./src/path')
 var webpack = require('webpack')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -17,7 +18,7 @@ module.exports = {
   entry: {
     app: [
       'babel-polyfill',
-      path.resolve(__dirname, 'src/main.js')
+      path.resolve(__dirname, filePath.filePath+'/main.js')
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
 

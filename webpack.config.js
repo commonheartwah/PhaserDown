@@ -1,3 +1,4 @@
+var filePath= require('./src/path')
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -12,12 +13,11 @@ var p2 = path.join(phaserModule, 'build/custom/p2.js')
 var definePlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true'))
 })
-
 module.exports = {
   entry: {
     app: [
       'babel-polyfill',
-      path.resolve(__dirname, 'src/main.js')
+      path.resolve(__dirname, filePath.devPath+'/main.js')
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
   },

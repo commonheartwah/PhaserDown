@@ -1,4 +1,5 @@
 var path = require('path')
+var filePath= require('./src/path')
 var webpack = require('webpack')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -13,24 +14,24 @@ var p2 = path.join(phaserModule, 'build/custom/p2.js')
 var definePlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
 })
-
+console.log(filePath.packPath)
 module.exports = {
   entry: {
     app: [
       'babel-polyfill',
-      path.resolve(__dirname, 'src/main.js')
+      path.resolve(__dirname, filePath.packPath+'/main.js')
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
 
   },
   output: {
-    path: path.resolve(__dirname, 'www/dist'),
+    path: path.resolve(__dirname, 'pack/dist'),
     publicPath: './dist/',
     filename: 'bundle.js'
   },
   plugins: [
     definePlugin,
-    new CleanWebpackPlugin(['www']),
+    new CleanWebpackPlugin(['pack']),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.UglifyJsPlugin({
       drop_console: true,
@@ -43,11 +44,11 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, 'assets/**/*'),
-        to: path.resolve(__dirname, 'www')
+        to: path.resolve(__dirname, 'pack')
       }
     ]),
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, 'www/index.html'),
+      filename: path.resolve(__dirname, 'pack/index.html'),
       template: './src/index.html',
       chunks: [
         'vendor', 'app'

@@ -13,13 +13,13 @@ export default class extends Phaser.State {
 
   preload () {
     // 图片加载 星星
-    this.load.image('star', 'assets/star.png')
+    this.load.image('star', 'assets/stars/star.png')
     // 背景
-    this.load.image('sky', 'assets/sky.png')
+    this.load.image('sky', 'assets/stars/sky.png')
     // 地板
-    this.load.image('ground', 'assets/platform.png')
+    this.load.image('ground', 'assets/stars/platform.png')
     // 加载精灵图 角色
-    this.load.spritesheet('dude', 'assets/dude.png', 32, 48)
+    this.load.spritesheet('dude', 'assets/stars/dude.png', 32, 48)
   }
   create () {
     // 启动ARCADE物理引擎
