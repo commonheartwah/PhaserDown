@@ -14,7 +14,8 @@ var p2 = path.join(phaserModule, 'build/custom/p2.js')
 var definePlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
 })
-console.log(filePath.packPath)
+var arr=filePath.packPath.split('/')[2]
+console.log(arr)
 module.exports = {
   entry: {
     app: [
@@ -25,13 +26,13 @@ module.exports = {
 
   },
   output: {
-    path: path.resolve(__dirname, 'pack/dist'),
-    publicPath: './dist/',
+    path: path.resolve(__dirname, 'pack/'+arr+'/js'),
+    publicPath: './js/',
     filename: 'bundle.js'
   },
   plugins: [
     definePlugin,
-    new CleanWebpackPlugin(['pack']),
+    // new CleanWebpackPlugin(['pack']),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.UglifyJsPlugin({
       drop_console: true,
@@ -43,12 +44,12 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */}),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'assets/**/*'),
-        to: path.resolve(__dirname, 'pack')
+        from: path.resolve(__dirname, 'assets/'+arr+'/**'),
+        to: path.resolve(__dirname, 'pack/'+arr)
       }
     ]),
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, 'pack/index.html'),
+      filename: path.resolve(__dirname, 'pack/'+arr+'/index.html'),
       template: './src/index.html',
       chunks: [
         'vendor', 'app'

@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
-// import BootState from './Boot'
-
 import config from './config'
+import { screenConfigInit, screenConfigPreload,screenConfigCreate } from '../../components/screenConfig'
+
 
 class Game extends Phaser.Game {
   constructor () {
@@ -9,7 +9,23 @@ class Game extends Phaser.Game {
     const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth
     const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight
 
-    super(width, height, Phaser.CANVAS, 'content', null)
+    // const width = 1920
+    // const height = 1080
+
+    super(width, height, Phaser.CANVAS, 'content', {
+
+      init: function () {
+        screenConfigInit()
+      },
+
+      preload: function () {
+        screenConfigPreload(1920,1080,game)
+      },
+
+      create:function(){
+        screenConfigCreate(1920,1080,game)
+      }
+    })
 
     // this.state.add('Boot', BootState, false)
 
