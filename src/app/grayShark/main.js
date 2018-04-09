@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import Init from './states/init'
 
 import config from './config'
-import { screenConfigInit, screenConfigPreload,screenConfigCreate } from '../../components/screenConfig'
+import { screenConfigInit, screenConfigPreload, screenConfigCreate } from '../../components/screenConfig'
 
 
 class Game extends Phaser.Game {
@@ -14,15 +14,18 @@ class Game extends Phaser.Game {
     super(width, height, Phaser.CANVAS, 'content', {
 
       init: function () {
-        screenConfigInit()
+        // screenConfigInit()
+        game.scale.pageAlignHorizontally = true
+        game.scale.pageAlignVertically = true
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
       },
 
       preload: function () {
-        screenConfigPreload(1920,1080,game)
+        // screenConfigPreload(1920,1080,game)
       },
 
-      create:function(){
-        screenConfigCreate(1920,1080,game)
+      create: function () {
+        // screenConfigCreate(1920,1080,game)
       }
     })
 

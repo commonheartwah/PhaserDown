@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { screenConfigInit, screenConfigPreload,screenConfigCreate } from '../../../components/screenConfig'
+import { screenConfigInit, screenConfigPreload, screenConfigCreate } from '../../../components/screenConfig'
 
 export default class extends Phaser.State {
 
@@ -34,11 +34,16 @@ export default class extends Phaser.State {
   }
 
   init() {
-    screenConfigInit()
+    // screenConfigInit()
+    // 水平居中
+    this.scale.pageAlignHorizontally = true
+    // 垂直居中
+    this.scale.pageAlignVertically = true
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
   }
 
   preload() {
-    screenConfigPreload(1920,1080,this)
+    // screenConfigPreload(1920,1080,this)
 
     /********************* 图片文件 *****************/
     // 图片背景图片
@@ -92,7 +97,7 @@ export default class extends Phaser.State {
   }
 
   create() {
-    screenConfigCreate(1920,1080,this)
+    // screenConfigCreate(1920,1080,this)
 
     var bg = this.add.sprite(0, 0, 'background')
     var musickuai = this.add.audio('musickuai')

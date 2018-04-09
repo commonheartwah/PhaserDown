@@ -1,5 +1,5 @@
 var path = require('path')
-var filePath= require('./src/path')
+var filePath = require('./src/path')
 var webpack = require('webpack')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -11,28 +11,32 @@ var phaser = path.join(phaserModule, 'build/custom/phaser-split.js')
 var pixi = path.join(phaserModule, 'build/custom/pixi.js')
 var p2 = path.join(phaserModule, 'build/custom/p2.js')
 
+// 公共代码 config
+var screenConfig = path.join(__dirname, 'src/components/screenConfig.js')
+
 var definePlugin = new webpack.DefinePlugin({
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false'))
 })
-var arr=filePath.packPath.split('/')[2]
+var arr = filePath.packPath.split('/')[2]
 console.log(arr)
 module.exports = {
   entry: {
     app: [
       'babel-polyfill',
-      path.resolve(__dirname, filePath.packPath+'/main.js')
+      path.resolve(__dirname, filePath.packPath + '/main.js')
+
     ],
-    vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
+    vendor: ['pixi', 'p2', 'phaser', 'webfontloader','screenConfig']
 
   },
   output: {
-    path: path.resolve(__dirname, 'pack/'+arr+'/js'),
+    path: path.resolve(__dirname, 'pack/' + arr + '/js'),
     publicPath: './js/',
-    filename: 'bundle.js'
+    filename: '[name]-[hash].bundle.js'
   },
   plugins: [
     definePlugin,
-    // new CleanWebpackPlugin(['pack']),
+    new CleanWebpackPlugin(['pack'+arr]),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.UglifyJsPlugin({
       drop_console: true,
@@ -41,15 +45,24 @@ module.exports = {
         comments: false
       }
     }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor'/* chunkName= */, filename: 'vendor.bundle.js'/* filename= */}),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      // chunkName='common',
+      filename: '[name].bundle.js',
+      minChunks:4
+    }),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, 'assets/'+arr+'/**'),
-        to: path.resolve(__dirname, 'pack/'+arr)
+        from: path.resolve(__dirname, 'assets/' + arr + '/**'),
+        to: path.resolve(__dirname, 'pack/' + arr)
+      },
+      {
+        from: path.resolve(__dirname, 'assets/common/**'),
+        to: path.resolve(__dirname, 'pack/' + arr)
       }
     ]),
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, 'pack/'+arr+'/index.html'),
+      filename: path.resolve(__dirname, 'pack/' + arr + '/index.html'),
       template: './src/index.html',
       chunks: [
         'vendor', 'app'
@@ -85,7 +98,8 @@ module.exports = {
     alias: {
       'phaser': phaser,
       'pixi': pixi,
-      'p2': p2
+      'p2': p2,
+      'screenConfig':screenConfig
     }
   }
 }

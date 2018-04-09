@@ -1,38 +1,74 @@
+import 'pixi'
+import 'p2'
 import Phaser from 'phaser'
 import config from './config'
-import { screenConfigInit, screenConfigPreload,screenConfigCreate } from '../../components/screenConfig'
+import gameOverState from '../../components/over'
+import centerState from '../../components/centerPage'
+import '../../components/map'
 
+window.interAction = {
+  overType: 0
+}
+
+// 测试全局方法
+window.buttonClick = function (isFinalGame, type) {
+  //菜单按钮
+  if (type == 1) {
+    parent.location.reload();
+  }
+  // 重来
+  if (type == 2) {
+    if (window.qid && isFinalGame) {
+      parent.replayAll()
+    } else {
+      window.location.reload();
+      parent.replayThis()
+    }
+  }
+  // 去往成长足迹
+  if (type == 3) {
+    window.gotoReport()
+  }
+  if (type == 4) {
+    if (isFinalGame) {
+      if (window.qid) {
+        // 跳到下一个关卡
+        goNextTask()
+      }
+    } else {
+      if (window.qid) {
+        // 判断如果是来自地图 游戏结束后传分
+        submitScore(window.qid, window.type, window.currentPage, window.totalPage, window.perScore, window.correctCount, window.totalScore)
+      } else {
+        // 是来自集训营课程 游戏结束后调用父方法进行下个游戏
+        parent.handleGoing(window.xIndex)
+      }
+    }
+  }
+}
 
 class Game extends Phaser.Game {
-  constructor () {
-    const docElement = document.documentElement
-    const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth
-    const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight
+  constructor() {
+    window.gameWidth = 1334
+    window.gameHeight = 750
 
-    // const width = 1920
-    // const height = 1080
-
-    super(width, height, Phaser.CANVAS, 'content', {
+    super(window.gameWidth, window.gameHeight, Phaser.CANVAS, 'content', {
 
       init: function () {
-        screenConfigInit()
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
       },
 
       preload: function () {
-        screenConfigPreload(1920,1080,game)
+        this.load.spritesheet('loading', 'assets/common/loading.png', 1740 / 6, 240, 6)
       },
 
-      create:function(){
-        screenConfigCreate(1920,1080,game)
+      create: function () {
+        this.state.start('preload')
       }
-    })
-
-    // this.state.add('Boot', BootState, false)
-
-    // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
-    if (!window.cordova) {
-      // this.state.start('Boot')
-    }
+    }, true)
+    this.state.add('preload', preloadState, false)
+    this.state.add('over', gameOverState, false)
+    this.state.add('centerState', centerState, false)
   }
 }
 
@@ -48,19 +84,13 @@ if (window.cordova) {
       )
     },
 
-    // deviceready Event Handler
-    //
     onDeviceReady: function () {
       this.receivedEvent('deviceready')
-
-      // When the device is ready, start Phaser Boot state.
-      // window.game.state.start('Boot')
     },
 
     receivedEvent: function (id) {
       console.log('Received Event: ' + id)
     }
   }
-
   app.initialize()
 }

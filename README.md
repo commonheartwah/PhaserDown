@@ -57,3 +57,7 @@ npm ERR! Exit status 2
   - path.js
     - 路径文件 开发打包使用
 - 外部 .babelrc .eslintrc .gitignore webpack 等配置文件
+
+- 推送到测试服命令
+-  ./util.bash 1 pullCurtain 
+-  密码 root@test 
